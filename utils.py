@@ -1,5 +1,3 @@
-from pprint import pprint
-from operator import itemgetter
 from  datetime import datetime
 
 
@@ -27,6 +25,7 @@ def last_recent_values(data, recent_values):
     """
     data = sorted(data, key=lambda x: x['date'], reverse=True)
     data = data[:recent_values]
+
     return data
 
 
@@ -37,6 +36,7 @@ def format_data(data):
     :return:
     """
     formatted = []
+
     for row in data:
         data = datetime.strptime(row['date'], '%Y-%m-%dT%H:%M:%S.%f').strftime('%d.%m.%Y')
         description = row['description']
@@ -45,9 +45,9 @@ def format_data(data):
 
         if 'from' in row:
             sender = row['from'].split()
-            sender_bill = sender.pop(-1)  # данные о счете
+            sender_bill = sender.pop(-1)
             sender_bill = f'{sender_bill[:4]} {sender_bill[4:6]}** **** {sender_bill[-4:]}'
-            sender_info = ''.join(sender)  # информация о счете
+            sender_info = ''.join(sender)
 
         to = f"{row['to'].split()[0]} **{row['to'][-4:]}"
         operation_amount = f"{row['operationAmount']['amount']} {row['operationAmount']['currency']['name']}"
@@ -56,10 +56,5 @@ def format_data(data):
 {data} {description} 
 {sender_info} {sender_bill} -> {to} 
 {operation_amount}""")
-    #print(formatted)
-        #print(f'Вывод данных: \n'
-              #f'{data} {description} \n'
-              #f'{sender_info} {sender_bill} -> {to} \n'
-              #f'{operation_amount} \n'
-              #f'')
+
     return formatted
